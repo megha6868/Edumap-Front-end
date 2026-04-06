@@ -1,0 +1,4 @@
+components/ChatTutor.tsx(27,21): error TS2339: Property 'input' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,28): error TS2339: Property 'handleInputChange' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,47): error TS2339: Property 'handleSubmit' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,61): error TS2339: Property 'isLoading' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.

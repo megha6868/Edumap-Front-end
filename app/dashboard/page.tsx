@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import ConceptMap from "@/components/ConceptMap";
-import { Map, ChevronDown, ChevronUp } from "lucide-react";
+import { Map, ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 
 interface Video {
   id: string;
@@ -179,19 +179,21 @@ export default function DashboardPage() {
                 <div className="grid gap-4">
                   {videos.map((video) => (
                     <div key={video.id}>
-                      <Link href={`/lecture/${video.id}`}>
-                        <Card className="p-4 border-border/50 hover:bg-muted/50 cursor-pointer transition">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h3 className="font-semibold text-foreground">
-                                {video.title || "Untitled Lecture"}
-                              </h3>
-                              <p className="text-sm text-muted-foreground">
-                                {video.video_url}
-                              </p>
-                            </div>
+                      <Card 
+                        className="p-4 border-border/50 hover:bg-muted/50 cursor-pointer transition"
+                        onClick={() => router.push(`/lecture/${video.id}`)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold text-foreground">
+                              {video.title || "Untitled Lecture"}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {video.video_url}
+                            </p>
+                          </div>
 
-                            <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
                               <span
                                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                                   video.status === "completed"
@@ -227,12 +229,22 @@ export default function DashboardPage() {
                                       <>Show Map <ChevronDown className="w-3 h-3" /></>
                                     )}
                                   </Button>
+                                  <Link href={`/chat/${video.id}`}>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="flex items-center gap-1 text-blue-600 border-blue-200 hover:bg-blue-50"
+                                    >
+                                      <MessageSquare className="w-4 h-4" />
+                                      Ask AI Tutor
+                                    </Button>
+                                  </Link>
                                 </div>
                               )}
                             </div>
                           </div>
                         </Card>
-                      </Link>
 
                       {/* Inline Concept Map */}
                       {expandedMapId === video.id && (
@@ -250,6 +262,8 @@ export default function DashboardPage() {
                           )}
                         </Card>
                       )}
+
+
                     </div>
                   ))}
                 </div>

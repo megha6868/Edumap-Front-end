@@ -1,0 +1,36 @@
+﻿components/ChatTutor.tsx(17,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(18,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(23,10): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(27,21): error TS2339: Property 'input' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,28): error TS2339: Property 'handleInputChange' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,47): error TS2339: Property 'handleSubmit' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(27,76): error TS2339: Property 'append' does not exist on type 'UseChatHelpers<UIMessage<unknown, UIDataTypes, UITools>>'.
+components/ChatTutor.tsx(54,5): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(56,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(57,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(63,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(67,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(69,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(70,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(71,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(72,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(77,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(79,16): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(80,18): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(84,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(85,15): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(89,15): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(90,17): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(97,12): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(98,14): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(99,16): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(101,14): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(106,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(110,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(111,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(112,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(119,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/ChatTutor.tsx(124,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+node_modules/@ai-sdk/react/dist/index.d.ts(6,5): error TS18028: Private identifiers are only available when targeting ECMAScript 2015 and higher.
+node_modules/ai/dist/index.d.ts(1605,64): error TS2694: Namespace 'Intl' has no exported member 'Segmenter'.
+node_modules/lucide-react/dist/lucide-react.d.ts(2,10): error TS2305: Module '"react"' has no exported member 'ReactSVG'.
