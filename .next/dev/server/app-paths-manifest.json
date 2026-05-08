@@ -2,6 +2,7 @@
   "/concept-map/[videoId]/page": "app/concept-map/[videoId]/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/history/page": "app/history/page.js",
-  "/lecture/[id]/page": "app/lecture/[id]/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
   "/summary/[id]/page": "app/summary/[id]/page.js"
 }

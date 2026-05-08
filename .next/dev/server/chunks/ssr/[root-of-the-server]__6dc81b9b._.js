@@ -1715,7 +1715,7 @@ function SummaryPage() {
                                                         // Handle markdown headings (## or ###)
                                                         const isMdHeading = trimmed.startsWith('##');
                                                         // Handle wrapped bold headings (**text**)
-                                                        const isWrappedBold = (trimmed.startsWith('**') || trimmed.startsWith('*   **')) && trimmed.endsWith('**');
+                                                        const isWrappedBold = (trimmed.startsWith('**') || trimmed.startsWith('* **')) && trimmed.endsWith('**');
                                                         if (isMdHeading || isWrappedBold) {
                                                             let cleanText = trimmed;
                                                             if (isMdHeading) {
