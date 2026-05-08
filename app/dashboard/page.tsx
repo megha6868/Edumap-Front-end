@@ -25,10 +25,13 @@ export default function DashboardPage() {
   const [videoUrl, setVideoUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [expandedMapId, setExpandedMapId] = useState<string | null>(null);
   const [conceptDataMap, setConceptDataMap] = useState<Record<string, any>>({});
   const [mapLoading, setMapLoading] = useState<string | null>(null);
 
+  const recentVideos = videos.slice(0, 5);
 
   // 🔐 Protect dashboard
   useEffect(() => {
@@ -36,23 +39,25 @@ export default function DashboardPage() {
     if (!token) {
       router.push("/login");
     } else {
-      fetchVideos();
+      fetchVideos(currentPage);
     }
-  }, []);
+  }, [currentPage]);
 
   // 📥 Fetch user's videos
-  const fetchVideos = async () => {
+  const fetchVideos = async (page: number = 1) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://127.0.0.1:5000/api/video/my-videos",
+        `http://127.0.0.1:5000/api/video/my-videos?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setVideos(response.data);
+      setVideos(response.data.videos);
+      setTotalPages(response.data.total_pages);
+      setCurrentPage(response.data.current_page);
     } catch (error) {
       console.error("Error fetching videos");
     }
@@ -80,7 +85,8 @@ export default function DashboardPage() {
 
       alert("Video submitted successfully");
       setVideoUrl("");
-      fetchVideos();
+      setCurrentPage(1); // Go to first page to see the new video
+      fetchVideos(1);
     } catch (error: any) {
       alert(error.response?.data?.message || "Error submitting video");
     } finally {
@@ -165,110 +171,43 @@ export default function DashboardPage() {
               </form>
             </Card>
 
-            {/* Recent Videos */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-foreground">
-                Your Lectures
-              </h2>
+            {/* Recent Searches */}
+            <Card className="p-6 border-border/50">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">
+                    Recent Searches
+                  </h2>
+                  
+                </div>
+                {/* <span className="text-sm text-muted-foreground">
+                  {recentVideos.length} / 5
+                </span> */}
+              </div>
 
-              {videos.length === 0 ? (
-                <p className="text-muted-foreground">
-                  No videos submitted yet.
+              {recentVideos.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No recent searches yet.
                 </p>
               ) : (
-                <div className="grid gap-4">
-                  {videos.map((video) => (
-                    <div key={video.id}>
-                      <Card 
-                        className="p-4 border-border/50 hover:bg-muted/50 cursor-pointer transition"
-                        onClick={() => router.push(`/lecture/${video.id}`)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h3 className="font-semibold text-foreground">
-                              {video.title || "Untitled Lecture"}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              {video.video_url}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
-                              <span
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  video.status === "completed"
-                                    ? "bg-green-500/10 text-green-700"
-                                    : "bg-yellow-500/10 text-yellow-700"
-                                }`}
-                              >
-                                {video.status}
-                              </span>
-
-                              {video.status === "summarized" && (
-                                <div className="flex gap-2">
-                                  <Link href={`/summary/${video.id}`}>
-                                    <Button size="sm" variant="outline">
-                                      View Summary
-                                    </Button>
-                                  </Link>
-                                  <Link href={`/concept-map/${video.id}`}>
-                                    <Button size="sm" className="bg-accent">
-                                      View Map
-                                    </Button>
-                                  </Link>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={(e) => toggleConceptMap(video.id, e)}
-                                    className="flex items-center gap-1"
-                                  >
-                                    <Map className="w-4 h-4" />
-                                    {expandedMapId === video.id ? (
-                                      <>Hide Map <ChevronUp className="w-3 h-3" /></>
-                                    ) : (
-                                      <>Show Map <ChevronDown className="w-3 h-3" /></>
-                                    )}
-                                  </Button>
-                                  <Link href={`/chat/${video.id}`}>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={(e) => e.stopPropagation()}
-                                      className="flex items-center gap-1 text-blue-600 border-blue-200 hover:bg-blue-50"
-                                    >
-                                      <MessageSquare className="w-4 h-4" />
-                                      Ask AI Tutor
-                                    </Button>
-                                  </Link>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </Card>
-
-                      {/* Inline Concept Map */}
-                      {expandedMapId === video.id && (
-                        <Card className="mt-2 p-4 border-border/50">
-                          {mapLoading === video.id ? (
-                            <div className="text-center py-8 text-muted-foreground">
-                              Loading concept map...
-                            </div>
-                          ) : conceptDataMap[video.id] ? (
-                            <ConceptMap conceptData={conceptDataMap[video.id]} />
-                          ) : (
-                            <div className="text-center py-8 text-muted-foreground">
-                              Concept map not available for this video.
-                            </div>
-                          )}
-                        </Card>
-                      )}
-
-
-                    </div>
+                <div className="grid gap-3">
+                  {recentVideos.map((video) => (
+                    <Link
+                      key={video.id}
+                      href={video.status === "summarized" ? `/summary/${video.id}` : `/lecture/${video.id}`}
+                      className="block rounded-xl border border-border/50 p-4 transition hover:bg-muted"
+                    >
+                      <h3 className="font-medium text-foreground truncate">
+                        {video.title || "Untitled Lecture"}
+                      </h3>
+                      <p className="text-sm text-muted-foreground truncate mt-1">
+                        {video.video_url}
+                      </p>
+                    </Link>
                   ))}
                 </div>
               )}
-            </div>
+            </Card>
 
           </div>
         </main>

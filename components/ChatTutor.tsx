@@ -81,27 +81,54 @@ function ChatTutorInner({ videoId, token }: { videoId: string; token: string }) 
           </div>
         )}
         
-        {messages.map((m: any) => (
-          <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            {m.role !== 'user' && (
-               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                 <Bot size={16} />
-               </div>
-            )}
-            
-            <div className={`max-w-[80%] p-3 rounded-xl ${m.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 text-gray-800 rounded-bl-none shadow-sm'}`}>
-              <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                {m.text || m.content || (m.parts && m.parts.map((p: any) => p.text).join(''))}
-              </p>
-            </div>
-            
-            {m.role === 'user' && (
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 flex-shrink-0">
-                <User size={16} />
+        {messages.map((m: any) => {
+          const content = m.text || m.content || (m.parts && m.parts.map((p: any) => p.text).join(''));
+          
+          return (
+            <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              {m.role !== 'user' && (
+                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                   <Bot size={16} />
+                 </div>
+              )}
+              
+              <div className={`max-w-[80%] p-3 rounded-xl ${m.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 text-gray-800 rounded-bl-none shadow-sm'}`}>
+                <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                  {content.split('\n').map((line: string, i: number) => {
+                    const trimmed = line.trim();
+                    const isMdHeading = trimmed.startsWith('##');
+                    
+                    if (isMdHeading) {
+                      return (
+                        <p key={i} className="font-bold text-slate-900 mt-2 mb-1">
+                          {trimmed.replace(/^#+\s*/, '')}
+                        </p>
+                      );
+                    }
+
+                    const parts = line.split(/(\*\*.*?\*\*)/g);
+                    return (
+                      <p key={i}>
+                        {parts.map((part, j) => {
+                          if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={j} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+                          }
+                          return part;
+                        })}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+              
+              {m.role === 'user' && (
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 flex-shrink-0">
+                  <User size={16} />
+                </div>
+              )}
+            </div>
+          );
+        })}
         
         {isLoading && (
            <div className="flex gap-3 justify-start">

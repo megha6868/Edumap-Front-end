@@ -11,6 +11,13 @@ import { TopBar } from "@/components/topbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Video {
   id: string;
@@ -23,9 +30,11 @@ export default function HistoryPage() {
   const router = useRouter();
 
   const [videos, setVideos] = useState<Video[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] =
-    useState<"all" | "summarized" | "processing" | "failed">("all");
+    useState<"all" | "summarized" | "failed">("all");
   const [loading, setLoading] = useState(true);
 
   /* =========================
@@ -39,13 +48,14 @@ export default function HistoryPage() {
       return;
     }
 
-    fetchVideos(token);
-  }, []);
+    fetchVideos(token, currentPage);
+  }, [currentPage]);
 
-  const fetchVideos = async (token: string) => {
+  const fetchVideos = async (token: string, page: number) => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/api/video/my-videos",
+        `http://127.0.0.1:5000/api/video/my-videos?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,7 +63,9 @@ export default function HistoryPage() {
         }
       );
 
-      setVideos(response.data);
+      setVideos(response.data.videos);
+      setTotalPages(response.data.total_pages);
+      setCurrentPage(response.data.current_page);
     } catch (error) {
       console.error("Failed to fetch history:", error);
     } finally {
@@ -64,7 +76,7 @@ export default function HistoryPage() {
   /* =========================
      SEARCH + FILTER
      ========================= */
-  const filteredVideos = videos.filter((video) => {
+  const filteredVideos = (videos || []).filter((video) => {
     const term = searchTerm.toLowerCase();
 
     const matchesSearch =
@@ -81,16 +93,13 @@ export default function HistoryPage() {
      STATUS COLOR
      ========================= */
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case "summarized":
-        return "bg-green-500/10 text-green-700";
-      case "processing":
-        return "bg-yellow-500/10 text-yellow-700";
-      case "failed":
-        return "bg-red-500/10 text-red-700";
-      default:
-        return "bg-gray-500/10 text-gray-700";
+    if (status === "summarized" || status === "completed") {
+      return "bg-green-500/10 text-green-700";
     }
+    if (status === "failed") {
+      return "bg-red-500/10 text-red-700";
+    }
+    return "bg-yellow-500/10 text-yellow-700";
   };
 
   return (
@@ -104,104 +113,130 @@ export default function HistoryPage() {
           <div className="p-8 max-w-6xl mx-auto space-y-8">
 
             {/* HEADER */}
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
+            <div className="flex flex-col gap-1">
+              <h1 className="text-3xl font-bold text-foreground tracking-tight">
                 Video History
               </h1>
               <p className="text-muted-foreground">
-                View all processed lecture videos
+                Review and access all your processed lecture materials.
               </p>
             </div>
 
             {/* SEARCH + FILTER */}
-            <Card className="p-6 border-border/50 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
+            <Card className="p-6 border-border/50 bg-card/50 backdrop-blur-sm">
+              <div className="flex flex-col md:flex-row gap-4 items-end w-full">
+                <div className="flex-1">
                   <Input
                     placeholder="Search by title or URL..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    className="bg-background/50 border-border/50 focus:border-primary/50 transition-colors w-full"
                   />
                 </div>
 
-                <div className="flex gap-2 flex-wrap">
-                  {(["all", "summarized", "processing", "failed"] as const).map(
-                    (status) => (
-                      <Button
-                        key={status}
-                        size="sm"
-                        variant={
-                          filterStatus === status ? "default" : "outline"
-                        }
-                        onClick={() => setFilterStatus(status)}
-                      >
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                      </Button>
-                    )
-                  )}
+                <div className="w-full md:w-48">
+                  <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+                    <SelectTrigger className="bg-background border-border">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All</SelectItem>
+                      <SelectItem value="summarized">Summarized</SelectItem>
+                      <SelectItem value="failed">Failed</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </Card>
 
             {/* LIST */}
-            {loading ? (
-              <Card className="p-8 text-center">
-                <p className="text-muted-foreground">Loading videos...</p>
-              </Card>
-            ) : filteredVideos.length === 0 ? (
-              <Card className="p-8 text-center">
-                <p className="text-muted-foreground">No videos found</p>
-              </Card>
-            ) : (
-              <div className="space-y-3">
-                {filteredVideos.map((video) => (
-                  <Card
-                    key={video.id}
-                    className="p-4 border-border/50 hover:border-border transition"
-                  >
-                    <div className="flex items-center justify-between gap-4">
-                      {/* LEFT */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-foreground truncate">
-                          {video.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground truncate">
-                          {video.video_url}
-                        </p>
-                      </div>
+            <div className="space-y-4">
+              
 
-                      {/* RIGHT */}
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                            video.status
-                          )}`}
-                        >
-                          {video.status}
+              {loading ? (
+                <div className="grid gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <Card key={i} className="p-6 border-border/50 animate-pulse bg-muted/5"></Card>
+                  ))}
+                </div>
+              ) : filteredVideos.length === 0 ? (
+                <Card className="p-12 text-center border-dashed border-2 border-border/50 bg-muted/5">
+                  <p className="text-muted-foreground font-medium">No records found for this criteria.</p>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  <div className="grid gap-4">
+                    {filteredVideos.map((video) => (
+                      <Card
+                        key={video.id}
+                        className="p-5 border-border/50 hover:bg-muted/50 cursor-pointer transition-all duration-200 group relative"
+                        onClick={() => {
+                          if (video.status === "summarized") {
+                            router.push(`/summary/${video.id}`);
+                          } else {
+                            router.push(`/lecture/${video.id}`);
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-between gap-6">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors text-lg truncate">
+                              {video.title || "Untitled Lecture"}
+                            </h3>
+                            <p className="text-sm text-muted-foreground truncate opacity-80 mt-1">
+                              {video.video_url}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-4">
+                            <span
+                              className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase ${getStatusColor(
+                                video.status
+                              )}`}
+                            >
+                              {video.status}
+                            </span>
+                          </div>
                         </div>
+                      </Card>
+                    ))}
+                  </div>
 
-                        {video.status === "summarized" && (
-                          <>
-                            {/* ✅ SAME AS DASHBOARD */}
-                            <Link href={`/lecture/${video.id}`}>
-                              <Button size="sm" variant="outline">
-                                Summary
-                              </Button>
-                            </Link>
-
-                            <Link href={`/concept-map/${video.id}`}>
-                              <Button size="sm">
-                                Concept Map
-                              </Button>
-                            </Link>
-                          </>
-                        )}
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-6 mt-12 py-6 border-t border-border/50">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        className="hover:bg-primary/5 rounded-full px-6"
+                      >
+                        Previous Page
+                      </Button>
+                      <div className="flex items-center gap-2">
+                         <span className="text-sm font-semibold bg-muted/50 px-3 py-1 rounded-md">
+                           {currentPage}
+                         </span>
+                         <span className="text-sm text-muted-foreground">of</span>
+                         <span className="text-sm font-bold text-muted-foreground">
+                           {totalPages}
+                         </span>
                       </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                        className="hover:bg-primary/5 rounded-full px-6"
+                      >
+                        Next Page
+                      </Button>
                     </div>
-                  </Card>
-                ))}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </main>
       </div>

@@ -573,7 +573,9 @@ function ChatTutorInner({ videoId, token }) {
                         lineNumber: 77,
                         columnNumber: 11
                     }, this),
-                    messages.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    messages.map((m)=>{
+                        const content = m.text || m.content || m.parts && m.parts.map((p)=>p.text).join('');
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: `flex gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`,
                             children: [
                                 m.role !== 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -582,28 +584,61 @@ function ChatTutorInner({ videoId, token }) {
                                         size: 16
                                     }, void 0, false, {
                                         fileName: "[project]/components/ChatTutor.tsx",
-                                        lineNumber: 88,
-                                        columnNumber: 18
+                                        lineNumber: 91,
+                                        columnNumber: 20
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/ChatTutor.tsx",
-                                    lineNumber: 87,
-                                    columnNumber: 16
+                                    lineNumber: 90,
+                                    columnNumber: 18
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: `max-w-[80%] p-3 rounded-xl ${m.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 text-gray-800 rounded-bl-none shadow-sm'}`,
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "whitespace-pre-wrap text-sm leading-relaxed",
-                                        children: m.text || m.content || m.parts && m.parts.map((p)=>p.text).join('')
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "text-sm leading-relaxed whitespace-pre-wrap",
+                                        children: content.split('\n').map((line, i)=>{
+                                            const trimmed = line.trim();
+                                            const isMdHeading = trimmed.startsWith('##');
+                                            if (isMdHeading) {
+                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "font-bold text-slate-900 mt-2 mb-1",
+                                                    children: trimmed.replace(/^#+\s*/, '')
+                                                }, i, false, {
+                                                    fileName: "[project]/components/ChatTutor.tsx",
+                                                    lineNumber: 103,
+                                                    columnNumber: 25
+                                                }, this);
+                                            }
+                                            const parts = line.split(/(\*\*.*?\*\*)/g);
+                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                children: parts.map((part, j)=>{
+                                                    if (part.startsWith('**') && part.endsWith('**')) {
+                                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                                            className: "font-bold text-slate-900",
+                                                            children: part.slice(2, -2)
+                                                        }, j, false, {
+                                                            fileName: "[project]/components/ChatTutor.tsx",
+                                                            lineNumber: 114,
+                                                            columnNumber: 36
+                                                        }, this);
+                                                    }
+                                                    return part;
+                                                })
+                                            }, i, false, {
+                                                fileName: "[project]/components/ChatTutor.tsx",
+                                                lineNumber: 111,
+                                                columnNumber: 23
+                                            }, this);
+                                        })
                                     }, void 0, false, {
                                         fileName: "[project]/components/ChatTutor.tsx",
-                                        lineNumber: 93,
-                                        columnNumber: 15
+                                        lineNumber: 96,
+                                        columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/ChatTutor.tsx",
-                                    lineNumber: 92,
-                                    columnNumber: 13
+                                    lineNumber: 95,
+                                    columnNumber: 15
                                 }, this),
                                 m.role === 'user' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 flex-shrink-0",
@@ -611,20 +646,21 @@ function ChatTutorInner({ videoId, token }) {
                                         size: 16
                                     }, void 0, false, {
                                         fileName: "[project]/components/ChatTutor.tsx",
-                                        lineNumber: 100,
-                                        columnNumber: 17
+                                        lineNumber: 126,
+                                        columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/ChatTutor.tsx",
-                                    lineNumber: 99,
-                                    columnNumber: 15
+                                    lineNumber: 125,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, m.id, true, {
                             fileName: "[project]/components/ChatTutor.tsx",
-                            lineNumber: 85,
-                            columnNumber: 11
-                        }, this)),
+                            lineNumber: 88,
+                            columnNumber: 13
+                        }, this);
+                    }),
                     isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex gap-3 justify-start",
                         children: [
@@ -635,12 +671,12 @@ function ChatTutorInner({ videoId, token }) {
                                     className: "animate-spin"
                                 }, void 0, false, {
                                     fileName: "[project]/components/ChatTutor.tsx",
-                                    lineNumber: 109,
+                                    lineNumber: 136,
                                     columnNumber: 16
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/ChatTutor.tsx",
-                                lineNumber: 108,
+                                lineNumber: 135,
                                 columnNumber: 14
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -648,20 +684,20 @@ function ChatTutorInner({ videoId, token }) {
                                 children: "Thinking..."
                             }, void 0, false, {
                                 fileName: "[project]/components/ChatTutor.tsx",
-                                lineNumber: 111,
+                                lineNumber: 138,
                                 columnNumber: 14
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ChatTutor.tsx",
-                        lineNumber: 107,
+                        lineNumber: 134,
                         columnNumber: 12
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ref: messagesEndRef
                     }, void 0, false, {
                         fileName: "[project]/components/ChatTutor.tsx",
-                        lineNumber: 116,
+                        lineNumber: 143,
                         columnNumber: 9
                     }, this)
                 ]
@@ -684,7 +720,7 @@ function ChatTutorInner({ videoId, token }) {
                             disabled: isLoading
                         }, void 0, false, {
                             fileName: "[project]/components/ChatTutor.tsx",
-                            lineNumber: 122,
+                            lineNumber: 149,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -695,23 +731,23 @@ function ChatTutorInner({ videoId, token }) {
                                 size: 16
                             }, void 0, false, {
                                 fileName: "[project]/components/ChatTutor.tsx",
-                                lineNumber: 134,
+                                lineNumber: 161,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ChatTutor.tsx",
-                            lineNumber: 129,
+                            lineNumber: 156,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ChatTutor.tsx",
-                    lineNumber: 121,
+                    lineNumber: 148,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/ChatTutor.tsx",
-                lineNumber: 120,
+                lineNumber: 147,
                 columnNumber: 7
             }, this)
         ]

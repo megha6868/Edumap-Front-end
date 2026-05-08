@@ -38,7 +38,7 @@ export default function HomePage() {
           </p>
 
           {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-12">
             <Card className="p-6 border-border/50 text-left">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-xl">📝</span>
@@ -62,37 +62,14 @@ export default function HomePage() {
               <h3 className="font-semibold mb-2">Concept Maps</h3>
               <p className="text-sm text-muted-foreground">Visual relationships between ideas and concepts</p>
             </Card>
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
-            <Link href="/signup">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Start Learning Free
-              </Button>
-            </Link>
-            <Button size="lg" variant="outline">
-              Watch Demo
-            </Button>
-          </div>
-
-          {/* Social Proof */}
-          <div className="pt-12 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-4">Trusted by students and educators</p>
-            <div className="flex justify-center gap-8">
-              <div className="text-center">
-                <p className="font-semibold text-2xl text-primary">10K+</p>
-                <p className="text-sm text-muted-foreground">Videos Processed</p>
+            <Card className="p-6 border-border/50 text-left">
+              <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-xl">💬</span>
               </div>
-              <div className="text-center">
-                <p className="font-semibold text-2xl text-primary">95%</p>
-                <p className="text-sm text-muted-foreground">Accuracy Rate</p>
-              </div>
-              <div className="text-center">
-                <p className="font-semibold text-2xl text-primary">50K+</p>
-                <p className="text-sm text-muted-foreground">Active Users</p>
-              </div>
-            </div>
+              <h3 className="font-semibold mb-2">Chatbot Tutor</h3>
+              <p className="text-sm text-muted-foreground">Ask questions, review lecture topics, and learn interactively.</p>
+            </Card>
           </div>
         </div>
       </main>

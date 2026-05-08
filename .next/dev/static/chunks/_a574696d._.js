@@ -537,6 +537,34 @@ function SummaryPage() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const [lecture, setLecture] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    // Concept Map states
+    const [showMap, setShowMap] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [conceptData, setConceptData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [mapLoading, setMapLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    // Toggle concept map
+    const toggleConceptMap = async ()=>{
+        if (showMap) {
+            setShowMap(false);
+            return;
+        }
+        setShowMap(true);
+        if (!conceptData) {
+            setMapLoading(true);
+            try {
+                const token = localStorage.getItem("token");
+                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5000/api/video/${id}/concept-map`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setConceptData(response.data);
+            } catch (error) {
+                console.error("Failed to fetch concept map:", error);
+            } finally{
+                setMapLoading(false);
+            }
+        }
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SummaryPage.useEffect": ()=>{
             const token = localStorage.getItem("token");
@@ -570,7 +598,7 @@ function SummaryPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Sidebar"], {}, void 0, false, {
                 fileName: "[project]/app/summary/[id]/page.tsx",
-                lineNumber: 55,
+                lineNumber: 92,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -578,7 +606,7 @@ function SummaryPage() {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$topbar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TopBar"], {}, void 0, false, {
                         fileName: "[project]/app/summary/[id]/page.tsx",
-                        lineNumber: 58,
+                        lineNumber: 95,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -595,14 +623,14 @@ function SummaryPage() {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/summary/[id]/page.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 106,
                                             columnNumber: 15
                                         }, this),
                                         "Back to Dashboard"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/summary/[id]/page.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 101,
                                     columnNumber: 13
                                 }, this),
                                 loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -610,14 +638,14 @@ function SummaryPage() {
                                     children: "Loading summary..."
                                 }, void 0, false, {
                                     fileName: "[project]/app/summary/[id]/page.tsx",
-                                    lineNumber: 74,
+                                    lineNumber: 111,
                                     columnNumber: 15
                                 }, this) : !lecture ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-red-500",
                                     children: "Lecture not found."
                                 }, void 0, false, {
                                     fileName: "[project]/app/summary/[id]/page.tsx",
-                                    lineNumber: 76,
+                                    lineNumber: 113,
                                     columnNumber: 15
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                     children: [
@@ -626,7 +654,7 @@ function SummaryPage() {
                                             children: lecture.title || "Lecture Summary"
                                         }, void 0, false, {
                                             fileName: "[project]/app/summary/[id]/page.tsx",
-                                            lineNumber: 80,
+                                            lineNumber: 117,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -636,12 +664,12 @@ function SummaryPage() {
                                                 children: lecture.video_url
                                             }, void 0, false, {
                                                 fileName: "[project]/app/summary/[id]/page.tsx",
-                                                lineNumber: 86,
+                                                lineNumber: 123,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/summary/[id]/page.tsx",
-                                            lineNumber: 85,
+                                            lineNumber: 122,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -652,21 +680,51 @@ function SummaryPage() {
                                                     children: "Summary"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/summary/[id]/page.tsx",
-                                                    lineNumber: 93,
+                                                    lineNumber: 130,
                                                     columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "whitespace-pre-wrap text-sm text-muted-foreground leading-relaxed",
-                                                    children: lecture.summary || "Summary not available yet."
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "space-y-2 text-sm text-muted-foreground leading-relaxed",
+                                                    children: lecture.summary ? lecture.summary.split('\n').map((line, i)=>{
+                                                        const trimmed = line.trim();
+                                                        // Handle markdown headings (## or ###)
+                                                        const isMdHeading = trimmed.startsWith('##');
+                                                        // Handle wrapped bold headings (**text**)
+                                                        const isWrappedBold = trimmed.startsWith('**') && trimmed.endsWith('**');
+                                                        if (isMdHeading || isWrappedBold) {
+                                                            let cleanText = trimmed;
+                                                            if (isMdHeading) {
+                                                                cleanText = trimmed.replace(/^#+\s*/, '');
+                                                            } else if (isWrappedBold) {
+                                                                cleanText = trimmed.slice(2, -2);
+                                                            }
+                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "font-bold text-foreground mt-6 mb-2 first:mt-0",
+                                                                children: cleanText
+                                                            }, i, false, {
+                                                                fileName: "[project]/app/summary/[id]/page.tsx",
+                                                                lineNumber: 151,
+                                                                columnNumber: 27
+                                                            }, this);
+                                                        }
+                                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "leading-relaxed",
+                                                            children: line
+                                                        }, i, false, {
+                                                            fileName: "[project]/app/summary/[id]/page.tsx",
+                                                            lineNumber: 157,
+                                                            columnNumber: 30
+                                                        }, this);
+                                                    }) : "Summary not available yet."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/summary/[id]/page.tsx",
-                                                    lineNumber: 96,
+                                                    lineNumber: 133,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/summary/[id]/page.tsx",
-                                            lineNumber: 92,
+                                            lineNumber: 129,
                                             columnNumber: 17
                                         }, this)
                                     ]
@@ -674,28 +732,28 @@ function SummaryPage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/summary/[id]/page.tsx",
-                            lineNumber: 61,
+                            lineNumber: 98,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/summary/[id]/page.tsx",
-                        lineNumber: 60,
+                        lineNumber: 97,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/summary/[id]/page.tsx",
-                lineNumber: 57,
+                lineNumber: 94,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/summary/[id]/page.tsx",
-        lineNumber: 54,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }
-_s(SummaryPage, "wnKPG20lGfErJRXJklrffVA3vjY=", false, function() {
+_s(SummaryPage, "C7znZ46vStBSF90A45JZIsdqpmE=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]

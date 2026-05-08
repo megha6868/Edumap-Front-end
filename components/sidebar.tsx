@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, History, Settings } from "lucide-react"
+import { LayoutDashboard, History } from "lucide-react"
 
 const navItems = [
   {
@@ -15,11 +15,6 @@ const navItems = [
     label: "History",
     href: "/history",
     icon: History,
-  },
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: Settings,
   },
 ]
 
